@@ -23,7 +23,7 @@ param catalogToken string = ''
 param location string
 
 @description('Name of the resource group')
-param resourceGroupName string = ''
+param resourceGroupName string = 'project-a'
 
 @description('Id of the user or app to assign application roles')
 param principalId string
