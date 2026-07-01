@@ -30,6 +30,7 @@ param principalId string
 
 var abbrs = loadJsonContent('./abbreviations.json')
 
+// tags that should be applied to all resources.
 var tags = {
 }
 
@@ -77,16 +78,15 @@ module keyVault './core/security/keyvault.bicep' = if (!empty(catalogToken)) {
   }
 }
 
-# module logging './core/monitor/loganalytics.bicep' = {
-#   name: 'logging'
-#   scope: rg
-#   params: {
-#     name: !empty(logWorkspaceName) ? logWorkspaceName : 'law-${resourceToken}'
-#     location: location
-#     tags: tags
-#   }
-# }
+module logging './core/monitor/loganalytics.bicep' = {
+  name: 'logging'
+  scope: rg
+  params: {
+    name: !empty(logWorkspaceName) ? logWorkspaceName : 'law-${resourceToken}'
+    location: location
+    tags: tags
+  }
+}
 
 output AZURE_LOCATION string = location
 output AZURE_TENANT_ID string = tenant().tenantId
-output BAD_SIGN string = 'yes'
