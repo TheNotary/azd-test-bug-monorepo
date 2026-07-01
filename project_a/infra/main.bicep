@@ -42,21 +42,21 @@ resource rg 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   tags: tags
 }
 
-var devCenterConfig = loadYamlContent('./devcenter.yaml')
-module devcenter 'core/devcenter/devcenter.bicep' = {
-  name: 'devcenter'
-  scope: rg
-  params: {
-    name: !empty(devCenterName) ? devCenterName : 'dc-${devCenterConfig.orgName}-${resourceToken}'
-    location: location
-    tags: tags
-    config: devCenterConfig
-    catalogToken: catalogToken
-    keyVaultName: !empty(catalogToken) ? keyVault.outputs.name : ''
-    logWorkspaceName: logging.outputs.name
-    principalId: principalId
-  }
-}
+// var devCenterConfig = loadYamlContent('./devcenter.yaml')
+// module devcenter 'core/devcenter/devcenter.bicep' = {
+//   name: 'devcenter'
+//   scope: rg
+//   params: {
+//     name: !empty(devCenterName) ? devCenterName : 'dc-${devCenterConfig.orgName}-${resourceToken}'
+//     location: location
+//     tags: tags
+//     config: devCenterConfig
+//     catalogToken: catalogToken
+//     keyVaultName: !empty(catalogToken) ? keyVault.outputs.name : ''
+//     logWorkspaceName: logging.outputs.name
+//     principalId: principalId
+//   }
+// }
 
 module keyVault './core/security/keyvault.bicep' = if (!empty(catalogToken)) {
   name: 'keyvault'
@@ -77,15 +77,15 @@ module keyVault './core/security/keyvault.bicep' = if (!empty(catalogToken)) {
   }
 }
 
-# module logging './core/monitor/loganalytics.bicep' = {
-#   name: 'logging'
-#   scope: rg
-#   params: {
-#     name: !empty(logWorkspaceName) ? logWorkspaceName : 'law-${resourceToken}'
-#     location: location
-#     tags: tags
-#   }
-# }
+// module logging './core/monitor/loganalytics.bicep' = {
+//   name: 'logging'
+//   scope: rg
+//   params: {
+//     name: !empty(logWorkspaceName) ? logWorkspaceName : 'law-${resourceToken}'
+//     location: location
+//     tags: tags
+//   }
+// }
 
 output AZURE_LOCATION string = location
 output AZURE_TENANT_ID string = tenant().tenantId
